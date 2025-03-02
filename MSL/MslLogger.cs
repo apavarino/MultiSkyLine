@@ -14,6 +14,7 @@ namespace MSL
         public const string Start = "🚀";
         public const string Stop = "⛔️";
         public const string Send= "📦";
+        public const string WriteToDisk= "🔏";
     }
     
     public static class MslLogger
@@ -53,6 +54,11 @@ namespace MSL
         public static void LogSend(string message)
         {
             Log(message, LogState.Send);
+        }
+
+        public static void LogWriteToDisk(string message)
+        {
+            Log(message, LogState.WriteToDisk);
         }
 
         public static void Log(string message, String logState)
