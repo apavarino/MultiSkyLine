@@ -71,7 +71,7 @@ namespace MSL
         
         public void UpdateCityDataDisplay(Dictionary<string, CityData> newCityData)
         {
-            MslLogger.Log("🔄 Updating city data..");
+            MslLogger.LogSuccess("Updating city data..");
 
             _cityData = newCityData;
             _listBox.items = new string[_cityData.Count];

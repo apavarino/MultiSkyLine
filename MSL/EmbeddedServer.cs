@@ -32,11 +32,11 @@ namespace MSL
 
                 _serverThread = new Thread(Run);
                 _serverThread.Start();
-                MslLogger.Log($"🌍 Server start on {url}");
+                MslLogger.LogServer($"🌍 Server start on {url}");
             }
             catch (Exception ex)
             {
-                MslLogger.Log($"❌ Unable to launch de server : {ex.Message}");
+                MslLogger.LogError($"Unable to launch de server : {ex.Message}");
             }
         }
 
@@ -72,7 +72,7 @@ namespace MSL
 
                         response.StatusCode = (int)HttpStatusCode.OK;
 
-                        MslLogger.Log($"✅ Received POST request ({clientIP})");
+                        MslLogger.LogSuccess($"Received POST request ({clientIP})");
                         break;
                     }
                     case "GET" when request.Url.AbsolutePath == "/api/cityData/all":
@@ -80,11 +80,11 @@ namespace MSL
                         var jsonResponse = JSON.ToJSON(_cityData);
                         var buffer = Encoding.UTF8.GetBytes(jsonResponse);
                         response.OutputStream.Write(buffer, 0, buffer.Length);
-                        MslLogger.Log($"✅ Received GET request ({clientIP})");
+                        MslLogger.LogServer($"Received GET request ({clientIP})");
                         break;
                     }
                     default:
-                        MslLogger.Log($"⚠️ Received unhandled request ({clientIP})");
+                        MslLogger.LogServer($"Received unhandled request ({clientIP})");
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
                 }
@@ -97,7 +97,7 @@ namespace MSL
         {
             _listener.Stop();
             _serverThread.Abort();
-            MslLogger.Log("⛔ Server stopped");
+            MslLogger.LogServer("Server stopped");
         }
     }
 }

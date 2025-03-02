@@ -17,13 +17,13 @@ namespace MSL
 
         public void Start()
         {
-            MslLogger.Log("🔄 Starting city data fetcher");
+            MslLogger.LogStart("Starting city data fetcher");
             _timer = new Timer(FetchCityData, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
         }
 
         public void Stop()
         {
-            MslLogger.Log("⛔ Stopping city data fetcher");
+            MslLogger.LogError("Stopping city data fetcher");
             _timer?.Dispose();
         }
 
@@ -31,14 +31,14 @@ namespace MSL
         {
             using (Client)
             {
-                MslLogger.Log($"🌍 Requesting city data ({_serverUrl})");
+                MslLogger.LogSend($"Requesting city data ({_serverUrl})");
 
             
                 Client.DownloadStringCompleted += (sender, e) =>
                 {
                     if (e.Error != null)
                     {
-                        MslLogger.Log($"❌ Error fetching city data: {e.Error.Message}");
+                        MslLogger.LogError($"Error fetching city data: {e.Error.Message}");
                         return;
                     }
 
@@ -55,11 +55,11 @@ namespace MSL
                             }
                         }
 
-                        MslLogger.Log("✅ City data successfully updated!");
+                        MslLogger.LogSuccess("City data successfully updated!");
                     }
                     catch (Exception ex)
                     {
-                        MslLogger.Log($"❌ Error parsing city data: {ex.Message}");
+                        MslLogger.LogError($"Error parsing city data: {ex.Message}");
                     }
                 };
                 Client.DownloadStringAsync(new Uri(_serverUrl));

@@ -21,13 +21,13 @@ namespace MSL
 
         public void Start()
         {
-            MslLogger.Log("🔄 Starting city data emitter");
+            MslLogger.LogStart("Starting city data emitter");
             _timer = new Timer(SendCityData, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
         }
 
         public void Stop()
         {
-            MslLogger.Log("⛔ Stopping city data emitter");
+            MslLogger.LogStop("Stopping city data emitter");
             _timer?.Dispose();
         }
 
@@ -50,18 +50,18 @@ namespace MSL
                 };
 
                 var json = JSON.ToJSON(payload, _jsonParams);
-                MslLogger.Log($"📦 JSON generated : {json}");
+                MslLogger.LogSend($"JSON generated : {json}");
 
                 using (var client = new WebClient())
                 {
                     client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    MslLogger.Log($"🌍 Sending to {_serverUrl}...");
+                    MslLogger.LogSend($"🌍 Sending to {_serverUrl}...");
                     client.UploadStringAsync(new Uri(_serverUrl), "POST", json);
                 }
             }
             catch (Exception ex)
             {
-                MslLogger.Log($"❌ Error sending request : {ex.Message}");
+                MslLogger.LogError($"Error sending request : {ex.Message}");
             }
         }
     }
