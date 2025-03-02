@@ -12,18 +12,6 @@ In this directory, create a `MSL` directory (if it does not yet exist). Then cop
 
 You will need to have the game installed locally to be able to work on the project and build it.
 
-You will then need to locate the game's installation directory, e.g. `C:\steamapps\common\Cities_Skylines\`. 
-For the remainder of this setup, we will refer to this path as `/path/to/cs_data/`.
+You will then need to locate the game's installation directory, e.g. `C:\steamapps\common\Cities_Skylines\`. We will refer to this path as `/path/to/cs`.
 
-To be able to build the project, you will need to import a few dlls in your project.
-
-## Rider (JetBrain):
-
-1. Right-click on your project name, under `Add` click on `Reference`.
-2. Then, click on the `Add from...` button at the bottom.
-3. Navigate to `/path/to/cs_data/Cities_Data/Managed`, and select all the `.dll` files.
-4. Once imported, your IDE should be ready.
-
-
-## Visual Studio (Microsoft):
-TODO
+To be able to build the project, you need to create a new environment variable called `CitiesSkylinesGameDir`. Its value needs to be the `/path/to/cs`
