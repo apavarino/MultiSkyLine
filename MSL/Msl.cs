@@ -44,7 +44,7 @@ namespace MSL
             _cityDataEmitter.Start();
             _cityDataFetcher.Start();
 
-            _uiObject = new GameObject("ElectricityUI");
+            _uiObject = new GameObject("CityDataUI");
             _uiObject.AddComponent<CityDataUI>();
         }
 
