@@ -83,4 +83,3 @@ You **must have the game installed locally** to develop and test the mod.
 This project is open-source under the **MIT License**.  
 Contributions are welcome! Feel free to open issues or pull requests.
 
----
