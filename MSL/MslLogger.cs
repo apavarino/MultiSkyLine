@@ -14,11 +14,12 @@ namespace MSL
         public const string Start = "🚀";
         public const string Stop = "⛔️";
         public const string Send= "📦";
+        public const string WriteToDisk= "🔏";
     }
     
     public static class MslLogger
     {
-        private static readonly string LogFilePath = Path.Combine(GetModDirectory(), "msl.log");
+        private static readonly string LogFilePath = Path.Combine(Utils.GetModDirectory(), "msl.log");
 
         public static void LogError(string message)
         {
@@ -55,6 +56,11 @@ namespace MSL
             Log(message, LogState.Send);
         }
 
+        public static void LogWriteToDisk(string message)
+        {
+            Log(message, LogState.WriteToDisk);
+        }
+
         public static void Log(string message, String logState)
         {
             try
@@ -70,15 +76,6 @@ namespace MSL
             {
                 Console.WriteLine($"Logging error : {ex.Message}");
             }
-        }
-
-        private static string GetModDirectory()
-        {
-            return (
-                from plugin in PluginManager.instance.GetPluginsInfo()
-                where plugin?.userModInstance != null && plugin.userModInstance.GetType().Namespace == "MSL"
-                select plugin.modPath
-            ).FirstOrDefault();
         }
     }
 }
