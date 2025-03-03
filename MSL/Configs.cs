@@ -28,7 +28,7 @@ namespace MSL
             }
             catch (Exception e)
             {
-                MslLogger.LogWarn("Could not load configs: " + e.Message);
+                MslLogger.LogError("Could not load configs: " + e.Message);
             }
         }
 
@@ -45,7 +45,7 @@ namespace MSL
             }
             catch (Exception e)
             {
-                MslLogger.LogWarn("Could not save configs: " + e.Message); 
+                MslLogger.LogError("Could not save configs: " + e.Message); 
             }
         }
     }
