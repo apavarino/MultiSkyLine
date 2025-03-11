@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using ColossalFramework;
 using fastJSON;
+using MSL.client.ui;
 using MSL.model;
 
 namespace MSL.client
@@ -10,7 +11,7 @@ namespace MSL.client
     public class CityDataEmitter
     {
         private readonly string _serverUrl = $"http://{Msl.ServerIP}:5000/api/cityData/update";
-        private readonly string _cityName = SimulationManager.instance.m_metaData.m_CityName;
+        public static readonly string CityName = SimulationManager.instance.m_metaData.m_CityName;
         private readonly JSONParameters _jsonParams = new JSONParameters
         {
             UseExtensions = false,
@@ -44,10 +45,11 @@ namespace MSL.client
                 
                 var payload = new CityData
                 {
-                    CityName = _cityName,
+                    CityName = CityName,
                     ElectricConsumption = consumption,
                     ElectricProduction = production,
-                    ElectricExtra = extra
+                    ElectricExtra = extra,
+                    Contracts = CityDataUI.CityData.TryGetValue(CityName, out var cityData) ? cityData.Contracts : null
                 };
 
                 var json = JSON.ToJSON(payload, _jsonParams);

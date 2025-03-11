@@ -10,6 +10,6 @@ namespace MSL.model
         public int ElectricConsumption { get; set; }
         public int ElectricProduction { get; set; }
         public int ElectricExtra { get; set; }
-        public List<Contract> Contracts { get; set; }
+        public List<Contract> Contracts { get; set; } = new List<Contract>();
     }
 }

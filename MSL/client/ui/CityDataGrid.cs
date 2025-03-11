@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using ColossalFramework.UI;
 using MSL.model;
 using UnityEngine;
@@ -46,15 +48,31 @@ namespace MSL.client.ui
                 Destroy(row.gameObject);
             }
             _rows.Clear();
-            
-            AddRow("City", "Cons.(MW)", "Prod.(MW)","Extra (MW)", isHeader: true);
-            foreach (var entry in cityData)
+
+            if (!CityDataUI.ToggleContract)
             {
-                AddRow(entry.Key, $"{entry.Value.ElectricConsumption / 1000}", $"{entry.Value.ElectricProduction / 1000}",$"{entry.Value.ElectricExtra / 1000}");
+                AddRow("City", "Cons.(MW)", "Prod.(MW)","Extra (MW)", isHeader: true);
+                foreach (var entry in cityData)
+                {
+                    AddRow(entry.Key, $"{entry.Value.ElectricConsumption / 1000}", $"{entry.Value.ElectricProduction / 1000}",$"{entry.Value.ElectricExtra / 1000}");
+                }
+            }
+            else
+            {
+                AddRow("City", "Type", "Amount","Price", isHeader: true);
+                foreach (var contract in cityData.SelectMany(entry => entry.Value.Contracts))
+                {
+                    AddRow( 
+                        contract.From, 
+                        contract.Type.ToString(),
+                        contract.Amount.ToString(CultureInfo.InvariantCulture),
+                        contract.Price.ToString(CultureInfo.InvariantCulture));
+                }
             }
         }
-
-        private void AddRow(string cityName, string consumption, string production,string extra, bool isHeader = false)
+        
+        // Todo use table instead of this ugly line system
+        private void AddRow(string line1, string line2, string line3,string line4, bool isHeader = false)
         {
             UIPanel rowPanel = _tableContainer.AddUIComponent<UIPanel>();
             rowPanel.width = _tableContainer.width;
@@ -62,10 +80,10 @@ namespace MSL.client.ui
             rowPanel.relativePosition = new Vector3(0, _rows.Count * RowHeight);
             rowPanel.backgroundSprite = isHeader ? "GenericPanel" : "GenericPanelLight";
             
-            CreateCell(rowPanel, cityName, 0, isHeader);
-            CreateCell(rowPanel, consumption, 1, isHeader);
-            CreateCell(rowPanel, production, 2, isHeader);
-            CreateCell(rowPanel, extra, 3, isHeader);
+            CreateCell(rowPanel, line1, 0, isHeader);
+            CreateCell(rowPanel, line2, 1, isHeader);
+            CreateCell(rowPanel, line3, 2, isHeader);
+            CreateCell(rowPanel, line4, 3, isHeader);
 
             _rows.Add(rowPanel);
         }

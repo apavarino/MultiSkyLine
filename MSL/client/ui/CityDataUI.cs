@@ -13,7 +13,7 @@ namespace MSL.client.ui
         private UIPanel _panel;
         private UIButton _toggleButton;
         private UIButton _toggleTabButton;
-        private bool _toggleContract = false;
+        public static bool ToggleContract = false;
         private UIButton _newContractButton;
         private UIButton _powerButton;
         private UILabel _titleLabel;
@@ -32,7 +32,8 @@ namespace MSL.client.ui
         private UIButton _applyButton;
         private UIButton _newContractCloseButton;
         
-        private Dictionary<string, CityData> _cityData = new Dictionary<string, CityData>();
+        public static Dictionary<string, CityData> CityData = new Dictionary<string, CityData>();
+       
         
         public void Start()
         {
@@ -80,6 +81,15 @@ namespace MSL.client.ui
                 var amount = _amountSlider.value;
                 var price = _priceSlider.value;
                 MslLogger.LogSuccess($"Amount: {amount}, Price: {price}");
+                var contract = new Contract
+                {
+                    From = CityDataEmitter.CityName,
+                    Amount = _amountSlider.value,
+                    Price = _priceSlider.value,
+                    Type = (ContractType)Enum.Parse(typeof(ContractType),_dropdown.selectedValue)
+                };
+                CityData[CityDataEmitter.CityName].Contracts.Add(contract);
+                _newContractPanel.isVisible = false;
             };
 
             // Closed
@@ -141,8 +151,10 @@ namespace MSL.client.ui
             _toggleTabButton = UIBuilder.CreateButton(_panel, "Toggle open contracts", 190,_panel.width - 360, _panel.height - 45);
             _toggleTabButton.eventClick += (component, eventParam) =>
             {
-                _toggleContract = !_toggleContract;
-                _toggleTabButton.text = _toggleContract ? "Toggle cities data" : "Show open contracts";
+                ToggleContract = !ToggleContract;
+                _toggleTabButton.text = ToggleContract ? "Toggle cities data" : "Show open contracts";
+                _cityDataGrid.UpdateGrid(CityData);
+                
             };
             // New Contract Button
             _newContractButton = UIBuilder.CreateButton(_panel, "New Contract", 150,_panel.width - 160, _panel.height - 45);
@@ -155,9 +167,8 @@ namespace MSL.client.ui
         public void UpdateCityDataDisplay(Dictionary<string, CityData> newCityData)
         {
             MslLogger.LogSuccess("Updating city data..");
-
-            _cityData = newCityData;
-            _cityDataGrid.UpdateGrid(_cityData);
+            CityData = newCityData;
+            _cityDataGrid.UpdateGrid(CityData);
         }
     }
 }

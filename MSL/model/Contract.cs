@@ -24,10 +24,10 @@ namespace MSL.model
         public ContractType Type { get; set; }
         
         /** The quantity of the resource being exchanged. */
-        public int Amount { get; set; }
+        public float Amount { get; set; }
         
         /** The price agreed upon for the exchanged resource. */
-        public int Price { get; set; }
+        public float Price { get; set; }
         
         /** Indicates whether the contract is active (true) or pending acceptance (false). */
         public bool Active { get; set; }
