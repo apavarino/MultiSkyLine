@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MSL.model;
 
 namespace MSL.server.db
@@ -15,6 +16,14 @@ namespace MSL.server.db
         public Dictionary<string, CityData> FetchAllPlayersCityData()
         {
             return _citiesData;
+        }
+
+        public List<Contract> FetchAllOpenContracts()
+        {
+           return _citiesData
+               .SelectMany(city => city.Value.Contracts
+                    .Where(contract => !contract.Active))
+               .ToList();
         }
     }
 }

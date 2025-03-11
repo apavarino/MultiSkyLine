@@ -12,6 +12,7 @@ namespace MSL.server.rest
         public CityDataRoute() : base(new Dictionary<RouteKey, Action<HttpListenerRequest, HttpListenerResponse>> {
             { new RouteKey("POST", "/api/cityData/update"), UpdateCityDataRoute },
             { new RouteKey("GET", "/api/cityData/all"), FetchAllCityDataRoute },
+            { new RouteKey("GET", "/api/cityData/contracts/open"), FetchOpenContractRoute },
         }){}
 
         private static void UpdateCityDataRoute(HttpListenerRequest request, HttpListenerResponse response)
@@ -26,9 +27,18 @@ namespace MSL.server.rest
             response.StatusCode = (int)HttpStatusCode.OK;
         }
 
+        
         private static void FetchAllCityDataRoute(HttpListenerRequest request, HttpListenerResponse response)
         {
             var jsonResponse = JSON.ToJSON(EmbeddedServer.CityDataRepository.FetchAllPlayersCityData());
+            var buffer = Encoding.UTF8.GetBytes(jsonResponse);
+            response.OutputStream.Write(buffer, 0, buffer.Length);
+        }
+        
+        
+        private static void FetchOpenContractRoute(HttpListenerRequest request, HttpListenerResponse response)
+        {
+            var jsonResponse = JSON.ToJSON(EmbeddedServer.CityDataRepository.FetchAllOpenContracts());
             var buffer = Encoding.UTF8.GetBytes(jsonResponse);
             response.OutputStream.Write(buffer, 0, buffer.Length);
         }
