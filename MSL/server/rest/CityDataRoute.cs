@@ -22,13 +22,13 @@ namespace MSL.server.rest
                 json = reader.ReadToEnd();
             }
             var data = JSON.ToObject<CityData>(json);
-            EmbeddedServer.CitiesData[data.CityName] = data;
+            EmbeddedServer.CityDataRepository.UpdatePlayerCityData(data.CityName,data);
             response.StatusCode = (int)HttpStatusCode.OK;
         }
 
         private static void FetchAllCityDataRoute(HttpListenerRequest request, HttpListenerResponse response)
         {
-            var jsonResponse = JSON.ToJSON(EmbeddedServer.CitiesData);
+            var jsonResponse = JSON.ToJSON(EmbeddedServer.CityDataRepository.FetchAllPlayersCityData());
             var buffer = Encoding.UTF8.GetBytes(jsonResponse);
             response.OutputStream.Write(buffer, 0, buffer.Length);
         }

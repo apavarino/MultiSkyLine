@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading;
-using MSL.model;
+using MSL.server.db;
 
 namespace MSL.server
 {
@@ -17,7 +17,7 @@ namespace MSL.server
         private readonly Dictionary<RouteKey, Action<HttpListenerRequest, HttpListenerResponse>> _routes = 
             new Dictionary<RouteKey, Action<HttpListenerRequest, HttpListenerResponse>>();
         
-        public static readonly Dictionary<string, CityData> CitiesData = new Dictionary<string, CityData>();
+        public static readonly CityDataInMemoryRepository CityDataRepository = new CityDataInMemoryRepository();
 
         public EmbeddedServer(string ip)
         {
