@@ -5,7 +5,7 @@ using ColossalFramework;
 using fastJSON;
 using MSL.model;
 
-namespace MSL
+namespace MSL.client
 {
     public class CityDataEmitter
     {

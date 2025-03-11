@@ -3,7 +3,7 @@ using ColossalFramework.UI;
 using MSL.model;
 using UnityEngine;
 
-namespace MSL.ui
+namespace MSL.client.ui
 {
     public class CityDataUI : MonoBehaviour
     {

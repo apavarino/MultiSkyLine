@@ -90,8 +90,9 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="CityDataEmitter.cs" />
-        <Compile Include="CityDataFetcher.cs" />
+        <Compile Include="client\CityDataEmitter.cs" />
+        <Compile Include="client\CityDataFetcher.cs" />
+        <Compile Include="client\ui\CityDataUI.cs" />
         <Compile Include="Configs.cs" />
         <Compile Include="model\CityData.cs" />
         <Compile Include="model\Contract.cs" />
@@ -102,7 +103,6 @@
         <Compile Include="server\rest\CityDataRoute.cs" />
         <Compile Include="server\RouteKey.cs" />
         <Compile Include="server\Routing.cs" />
-        <Compile Include="ui\CityDataUI.cs" />
         <Compile Include="Utils.cs" />
     </ItemGroup>
     <ItemGroup>

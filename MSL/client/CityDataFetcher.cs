@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Net;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using fastJSON;
+using MSL.client.ui;
 using MSL.model;
-using MSL.ui;
 using UnityEngine;
 
-namespace MSL
+namespace MSL.client
 {
     public class CityDataFetcher
     {

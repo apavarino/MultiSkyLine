@@ -1,7 +1,8 @@
 ﻿using ColossalFramework.UI;
 using ICities;
+using MSL.client;
+using MSL.client.ui;
 using MSL.server;
-using MSL.ui;
 using UnityEngine;
 
 namespace MSL
