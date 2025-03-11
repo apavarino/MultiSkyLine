@@ -93,6 +93,8 @@
         <Compile Include="client\CityDataEmitter.cs" />
         <Compile Include="client\CityDataFetcher.cs" />
         <Compile Include="client\ui\CityDataUI.cs" />
+        <Compile Include="client\ui\UIBuilder.cs" />
+        <Compile Include="client\ui\CityDataGrid.cs" />
         <Compile Include="Configs.cs" />
         <Compile Include="model\CityData.cs" />
         <Compile Include="model\Contract.cs" />

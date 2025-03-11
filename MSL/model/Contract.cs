@@ -14,10 +14,10 @@ namespace MSL.model
     [Serializable]
     public class Contract
     {
-        /** The player who initiated the contract. */
+        /** The city who initiated the contract. */
         public string From { get; set; }
         
-        /** The player who accepted the contract. */
+        /** The city who accepted the contract. */
         public string To { get; set; }
         
         /** The type of resource being exchanged */
