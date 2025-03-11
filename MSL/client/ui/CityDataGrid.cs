@@ -21,9 +21,9 @@ namespace MSL.client.ui
 
         private void CreateUI()
         {
-            width = 550;
+            width = 530;
             height = 300;
-            relativePosition = new Vector3(100, 40);
+            relativePosition = new Vector3(120, 40);
             backgroundSprite = "GenericPanel";
             
             UILabel titleLabel = AddUIComponent<UILabel>();
@@ -31,7 +31,7 @@ namespace MSL.client.ui
             titleLabel.relativePosition = new Vector3(10, 7);
             
             _tableContainer = AddUIComponent<UIPanel>();
-            _tableContainer.width = 550;
+            _tableContainer.width = 530;
             _tableContainer.height = 270;
             _tableContainer.relativePosition = new Vector3(0, 30);
             _tableContainer.backgroundSprite = "GenericPanelLight";

@@ -12,7 +12,10 @@ namespace MSL.client.ui
         // Main panel
         private UIPanel _panel;
         private UIButton _toggleButton;
+        private UIButton _toggleTabButton;
+        private bool _toggleContract = false;
         private UIButton _newContractButton;
+        private UIButton _powerButton;
         private UILabel _titleLabel;
         private UIButton _closeButton;
         private UIListBox _listBox;
@@ -50,7 +53,7 @@ namespace MSL.client.ui
             _newContractPanel.backgroundSprite = "MenuPanel";
             _newContractPanel.width = 425;
             _newContractPanel.height = 200;
-            _newContractPanel.relativePosition = new Vector3(300, 300); 
+            _newContractPanel.relativePosition = new Vector3(220, 520); 
             _newContractPanel.isVisible = false;
             
             // Label
@@ -67,11 +70,11 @@ namespace MSL.client.ui
             );
             
             // Slider
-            _amountSlider = UIBuilder.CreateSlider(_newContractPanel,"Amount", 95, 0, 100, 1,_amountTextField);
-            _priceSlider = UIBuilder.CreateSlider(_newContractPanel,"Price", 140, 0, 500, 5, _priceTextField);
+            _amountSlider = UIBuilder.CreateSlider(_newContractPanel,"Amount", 95, 0, 1000, 1,_amountTextField);
+            _priceSlider = UIBuilder.CreateSlider(_newContractPanel,"Price", 140, 0, 5000, 5, _priceTextField);
             
             //Apply
-            _applyButton = UIBuilder.CreateButton(_newContractPanel,"New Contract", 160);
+            _applyButton = UIBuilder.CreateButton(_newContractPanel,"New Contract", 120,150,160);
             _applyButton.eventClick += (component, eventParam) =>
             {
                 var amount = _amountSlider.value;
@@ -130,17 +133,19 @@ namespace MSL.client.ui
             _closeButton.normalBgSprite = "ButtonClose";
             _closeButton.relativePosition = new Vector3(_panel.width - 30, 5);
             _closeButton.eventClick += (component, eventParam) => { _panel.isVisible = false; };
-                
+
+            // Power button
+            _powerButton = UIBuilder.CreateButton(_panel, "Power", 100,10, 50);
+            
+            // Toggle Button
+            _toggleTabButton = UIBuilder.CreateButton(_panel, "Toggle open contracts", 190,_panel.width - 360, _panel.height - 45);
+            _toggleTabButton.eventClick += (component, eventParam) =>
+            {
+                _toggleContract = !_toggleContract;
+                _toggleTabButton.text = _toggleContract ? "Toggle cities data" : "Show open contracts";
+            };
             // New Contract Button
-            _newContractButton = (UIButton)_panel.AddUIComponent(typeof(UIButton));
-            _newContractButton.text = " + Contract";
-            _newContractButton.width = 100;
-            _newContractButton.height = 30;
-            _newContractButton.normalBgSprite = "ButtonMenu";
-            _newContractButton.hoveredBgSprite = "ButtonMenuHovered";
-            _newContractButton.pressedBgSprite = "ButtonMenuPressed";
-            _newContractButton.isVisible = true;
-            _newContractButton.relativePosition = new Vector3(_panel.width - 110, _panel.height - 45);
+            _newContractButton = UIBuilder.CreateButton(_panel, "New Contract", 150,_panel.width - 160, _panel.height - 45);
             _newContractButton.eventClick += (component, eventParam) =>
             {
                 _newContractPanel.isVisible = true;
@@ -153,14 +158,6 @@ namespace MSL.client.ui
 
             _cityData = newCityData;
             _cityDataGrid.UpdateGrid(_cityData);
-            // _listBox.items = new string[_cityData.Count];
-
-            // var index = 0;
-            // foreach (var entry in _cityData)
-            // {
-            //     _listBox.items[index] = $"{entry.Key} : CONSO :{entry.Value.ElectricConsumption/1000} MW, PROD: {entry.Value.ElectricProduction/1000}MW, EXTRA: {entry.Value.ElectricExtra/1000}MW";
-            //     index++;
-            // }
         }
     }
 }

@@ -49,13 +49,13 @@ namespace MSL.client.ui
             return slider;
         }
         
-        public static UIButton CreateButton(UIPanel panel,string text, float yOffset)
+        public static UIButton CreateButton(UIPanel panel,string text,float width, float xOffset, float yOffset)
         {
             UIButton button = panel.AddUIComponent<UIButton>();
             button.text = text;
-            button.width = 120;
+            button.width = width;
             button.height = 30;
-            button.relativePosition = new Vector3(150, yOffset);
+            button.relativePosition = new Vector3(xOffset, yOffset);
             button.normalBgSprite = "ButtonMenu";
             button.hoveredBgSprite = "ButtonMenuHovered";
             button.pressedBgSprite = "ButtonMenuPressed";
