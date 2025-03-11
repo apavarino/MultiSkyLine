@@ -19,53 +19,66 @@ namespace MSL
     
     public static class MslLogger
     {
-        private static readonly string LogFilePath = Path.Combine(Utils.GetModDirectory(), "msl.log");
+        private static readonly string LogFilePath = Path.Combine(Utils.GetModDirectory(), "client.log");
+        private static readonly string ServerLogFilePath = Path.Combine(Utils.GetModDirectory(), "server.log");
 
-        public static void LogError(string message)
-        {
-            Log(message, LogState.Error);
-        }
-        
+        // Server
         public static void LogServer(string message)
         {
-            Log(message, LogState.Server);
+            LogServer(message, LogState.Server);
+        }
+        
+        // Client
+        public static void LogError(string message)
+        {
+            LogClient(message, LogState.Error);
         }
         
         public static void LogSuccess(string message)
         {
-            Log(message, LogState.Success);
+            LogClient(message, LogState.Success);
         }
         
         public static void LogWarn(string message)
         {
-            Log(message, LogState.Warning);
+            LogClient(message, LogState.Warning);
         }
         
         public static void LogStart(string message)
         {
-            Log(message, LogState.Start);
+            LogClient(message, LogState.Start);
         }
         
         public static void LogStop(string message)
         {
-            Log(message, LogState.Stop);
+            LogClient(message, LogState.Stop);
         }
         
         public static void LogSend(string message)
         {
-            Log(message, LogState.Send);
+            LogClient(message, LogState.Send);
         }
 
         public static void LogWriteToDisk(string message)
         {
-            Log(message, LogState.WriteToDisk);
+            LogClient(message, LogState.WriteToDisk);
         }
 
-        public static void Log(string message, String logState)
+        private static void LogServer(string message, String logState)
+        { 
+            Log(message,logState,ServerLogFilePath);
+        }
+
+        private static void LogClient(string message, String logState)
+        {
+           Log(message,logState,LogFilePath);
+        }
+
+        private static void Log(string message, String logState, String logPath)
         {
             try
             {
-                using (var writer = new StreamWriter(LogFilePath, true))
+                using (var writer = new StreamWriter(logPath, true))
                 {
                     if (message == null) return;
                     var logMessage = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {logState} {message}";
