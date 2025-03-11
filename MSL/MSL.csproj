@@ -93,12 +93,15 @@
         <Compile Include="CityDataEmitter.cs" />
         <Compile Include="CityDataFetcher.cs" />
         <Compile Include="Configs.cs" />
-        <Compile Include="EmbeddedServer.cs" />
         <Compile Include="model\CityData.cs" />
         <Compile Include="model\Contract.cs" />
         <Compile Include="Msl.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="MslLogger.cs" />
+        <Compile Include="server\EmbeddedServer.cs" />
+        <Compile Include="server\rest\CityDataRoute.cs" />
+        <Compile Include="server\RouteKey.cs" />
+        <Compile Include="server\Routing.cs" />
         <Compile Include="ui\CityDataUI.cs" />
         <Compile Include="Utils.cs" />
     </ItemGroup>
