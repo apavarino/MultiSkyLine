@@ -90,15 +90,16 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="CityData.cs" />
         <Compile Include="CityDataEmitter.cs" />
         <Compile Include="CityDataFetcher.cs" />
-        <Compile Include="CityDataUI.cs" />
         <Compile Include="Configs.cs" />
         <Compile Include="EmbeddedServer.cs" />
+        <Compile Include="model\CityData.cs" />
+        <Compile Include="model\Contract.cs" />
         <Compile Include="Msl.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="MslLogger.cs" />
+        <Compile Include="ui\CityDataUI.cs" />
         <Compile Include="Utils.cs" />
     </ItemGroup>
     <ItemGroup>

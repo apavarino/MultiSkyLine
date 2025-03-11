@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using fastJSON;
+using MSL.model;
 
 namespace MSL
 {

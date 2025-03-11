@@ -3,7 +3,7 @@ using ColossalFramework.Plugins;
 
 namespace MSL
 {
-    public class Utils
+    public static class Utils
     {
         public static string GetModDirectory()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace MSL
+namespace MSL.model
 {
     [Serializable]
     public class CityData
@@ -9,5 +10,6 @@ namespace MSL
         public int ElectricConsumption { get; set; }
         public int ElectricProduction { get; set; }
         public int ElectricExtra { get; set; }
+        public List<Contract> Contracts { get; set; }
     }
 }

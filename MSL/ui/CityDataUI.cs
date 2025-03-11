@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using ColossalFramework.UI;
+using MSL.model;
+using UnityEngine;
 
-namespace MSL
+namespace MSL.ui
 {
-    using ColossalFramework.UI;
-    using UnityEngine;
-
     public class CityDataUI : MonoBehaviour
     {
         private UIPanel _panel;

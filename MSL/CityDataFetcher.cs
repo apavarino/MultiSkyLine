@@ -4,6 +4,8 @@ using System.Net;
 using System.Collections.Generic;
 using System.Threading;
 using fastJSON;
+using MSL.model;
+using MSL.ui;
 using UnityEngine;
 
 namespace MSL

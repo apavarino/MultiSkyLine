@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using ColossalFramework;
 using fastJSON;
+using MSL.model;
 
 namespace MSL
 {
