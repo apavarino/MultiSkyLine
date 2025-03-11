@@ -24,8 +24,7 @@ namespace MSL
         
         private readonly Configs _configs = new Configs();
 
-
-        public void OnEnabled()
+        public void OnLevelLoaded(LoadMode mode)
         {
             _configs.LoadConfig();
             _isServerEnabled = _configs.IsServerEnabled;
@@ -41,18 +40,7 @@ namespace MSL
             }
 
             MslLogger.LogSuccess($"Mod enable. Server active : {_isServerEnabled}");
-        }
-
-        public void OnCreated(ILoading loading)
-        {
-        }
-
-        public void OnReleased()
-        {
-        }
-
-        public void OnLevelLoaded(LoadMode mode)
-        {
+            
             _cityDataEmitter = new CityDataEmitter();
             _cityDataFetcher = new CityDataFetcher();
             _cityDataEmitter.Start();
@@ -63,10 +51,6 @@ namespace MSL
         }
 
         public void OnLevelUnloading()
-        {
-        }
-
-        public void OnDisabled()
         {
             if (_uiObject != null)
             {
@@ -79,6 +63,7 @@ namespace MSL
             _configs.SaveConfig();
             MslLogger.LogStop("Mod disabled");
         }
+        
 
         private void StartServer()
         {
@@ -142,5 +127,14 @@ namespace MSL
             }) as UITextField;
             
         }
+        
+        public void OnCreated(ILoading loading)
+        {
+        }
+
+        public void OnReleased()
+        {
+        }
     }
+    
 }
