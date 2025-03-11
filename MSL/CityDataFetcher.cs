@@ -1,5 +1,4 @@
 ﻿using System;
-using ICities;
 using System.Net;
 using System.Collections.Generic;
 using System.Threading;
@@ -31,40 +30,41 @@ namespace MSL
 
         private void FetchCityData(object state)
         {
-            using (Client)
+            MslLogger.LogSend($"Requesting city data ({_serverUrl})");
+
+            // Avoid multiple subscribe
+            Client.DownloadStringCompleted -= OnDownloadStringCompleted;
+            Client.DownloadStringCompleted += OnDownloadStringCompleted;
+
+            Client.DownloadStringAsync(new Uri(_serverUrl));
+        }
+
+        private void OnDownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            if (e.Error != null)
             {
-                MslLogger.LogSend($"Requesting city data ({_serverUrl})");
+                MslLogger.LogError($"Error fetching city data: {e.Error.Message}");
+                return;
+            }
 
-            
-                Client.DownloadStringCompleted += (sender, e) =>
+            try
+            {
+                if (e.Result != null && e.Result.Trim().Length > 0 && e.Result.Trim() != "{}")
                 {
-                    if (e.Error != null)
-                    {
-                        MslLogger.LogError($"Error fetching city data: {e.Error.Message}");
-                        return;
-                    }
+                    _playerCityData = JSON.ToObject<Dictionary<string, CityData>>(e.Result);
 
-                    try
+                    var ui = GameObject.FindObjectOfType<CityDataUI>();
+                    if (ui != null)
                     {
-                        if (e.Result != null && e.Result.Trim().Length > 0 && e.Result.Trim() != "{}")
-                        {
-                            _playerCityData = JSON.ToObject<Dictionary<string, CityData>>(e.Result);
-                            
-                            var ui = GameObject.FindObjectOfType<CityDataUI>();
-                            if (ui != null)
-                            {
-                                ui.UpdateCityDataDisplay(_playerCityData);
-                            }
-                        }
+                        ui.UpdateCityDataDisplay(_playerCityData);
+                    }
+                }
 
-                        MslLogger.LogSuccess("City data successfully updated!");
-                    }
-                    catch (Exception ex)
-                    {
-                        MslLogger.LogError($"Error parsing city data: {ex.Message}");
-                    }
-                };
-                Client.DownloadStringAsync(new Uri(_serverUrl));
+                MslLogger.LogSuccess("City data successfully updated!");
+            }
+            catch (Exception ex)
+            {
+                MslLogger.LogError($"Error parsing city data: {ex.Message}");
             }
         }
     }

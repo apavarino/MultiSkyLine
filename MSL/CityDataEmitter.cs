@@ -56,7 +56,7 @@ namespace MSL
                 using (var client = new WebClient())
                 {
                     client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    MslLogger.LogSend($"🌍 Sending to {_serverUrl}...");
+                    MslLogger.LogSend($"Sending to {_serverUrl}...");
                     client.UploadStringAsync(new Uri(_serverUrl), "POST", json);
                 }
             }
