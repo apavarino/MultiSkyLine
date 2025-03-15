@@ -23,13 +23,13 @@ namespace MSL.server.rest
                 json = reader.ReadToEnd();
             }
             var data = JSON.ToObject<CityData>(json);
-            EmbeddedServer.CityDataRepository.UpdatePlayerCityData(data.CityName,data);
+            EmbeddedServer.CityDataRepository.UpdateOneByCityName(data.CityName,data);
             response.StatusCode = (int)HttpStatusCode.OK;
         }
         
         private static void FetchAllCityDataRoute(HttpListenerRequest request, HttpListenerResponse response)
         {
-            var jsonResponse = JSON.ToJSON(EmbeddedServer.CityDataRepository.FetchAllPlayersCityData());
+            var jsonResponse = JSON.ToJSON(EmbeddedServer.CityDataRepository.FindAll());
             var buffer = Encoding.UTF8.GetBytes(jsonResponse);
             response.OutputStream.Write(buffer, 0, buffer.Length);
         }
@@ -37,7 +37,7 @@ namespace MSL.server.rest
         
         private static void FetchOpenContractRoute(HttpListenerRequest request, HttpListenerResponse response)
         {
-            var jsonResponse = JSON.ToJSON(EmbeddedServer.CityDataRepository.FetchAllOpenContracts());
+            var jsonResponse = JSON.ToJSON(EmbeddedServer.CityDataRepository.FindAllOpenContracts());
             var buffer = Encoding.UTF8.GetBytes(jsonResponse);
             response.OutputStream.Write(buffer, 0, buffer.Length);
         }

@@ -98,10 +98,10 @@
         <Compile Include="Configs.cs" />
         <Compile Include="model\CityData.cs" />
         <Compile Include="model\Contract.cs" />
+        <Compile Include="model\repository\CityDataRepository.cs" />
         <Compile Include="Msl.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="MslLogger.cs" />
-        <Compile Include="server\db\CityDataInMemoryRepository.cs" />
         <Compile Include="server\EmbeddedServer.cs" />
         <Compile Include="server\rest\CityDataRoute.cs" />
         <Compile Include="server\RouteKey.cs" />

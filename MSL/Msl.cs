@@ -1,8 +1,8 @@
 ﻿using ColossalFramework.UI;
 using ICities;
-using MSL.client;
 using MSL.client.controller;
 using MSL.client.ui;
+using MSL.model.repository;
 using MSL.server;
 using UnityEngine;
 
@@ -17,11 +17,12 @@ namespace MSL
 
         private CityDataEmitter _cityDataEmitter;
         private CityDataFetcher _cityDataFetcher;
+        private CityDataRepository _clientRepository;
         
         public static string ServerIP = "127.0.0.1";
         private static bool _isServerEnabled = true;
 
-        private GameObject _uiObject;
+        private CityDataUI _cityDataUI;
         
         private readonly Configs _configs = new Configs();
         
@@ -40,22 +41,25 @@ namespace MSL
                 ServerIP = _configs.DistantUrl;
             }
 
-            MslLogger.LogSuccess($"Mod enable. Server active : {_isServerEnabled}");
-            
-            _cityDataEmitter = new CityDataEmitter();
-            _cityDataFetcher = new CityDataFetcher();
+           
+            _clientRepository = new CityDataRepository(SimulationManager.instance.m_metaData.m_CityName);
+            _cityDataEmitter = new CityDataEmitter(_clientRepository);
+            _cityDataFetcher = new CityDataFetcher(_clientRepository);
             _cityDataEmitter.Start();
             _cityDataFetcher.Start();
+            
+            _cityDataUI = new GameObject("CityDataUI").AddComponent<CityDataUI>();
+            _cityDataUI.Initialize(_clientRepository);
 
-            _uiObject = new GameObject("CityDataUI");
-            _uiObject.AddComponent<CityDataUI>();
+            
+            MslLogger.LogSuccess($"Mod enable. Server active : {_isServerEnabled}");
         }
 
         public void OnLevelUnloading()
         {
-            if (_uiObject != null)
+            if (_cityDataUI != null)
             {
-                GameObject.Destroy(_uiObject);
+                GameObject.Destroy(_cityDataUI);
             }
             
             _cityDataEmitter?.Stop();
