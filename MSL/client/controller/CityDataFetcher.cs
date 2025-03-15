@@ -5,17 +5,23 @@ using System.Threading;
 using fastJSON;
 using MSL.client.ui;
 using MSL.model;
+using MSL.model.repository;
 using UnityEngine;
 
-namespace MSL.client
+namespace MSL.client.controller
 {
     public class CityDataFetcher
     {
         private static readonly WebClient Client = new WebClient();
         private readonly string _serverUrl = $"http://{Msl.ServerIP}:5000/api/cityData/all";
-        private static Dictionary<string, CityData> _playerCityData = new Dictionary<string, CityData>();
         private Timer _timer;
-
+        private readonly CityDataRepository _cityDataRepository;
+        
+        public CityDataFetcher(CityDataRepository cityDataRepository )
+        {
+            _cityDataRepository = cityDataRepository;
+        }
+        
         public void Start()
         {
             MslLogger.LogStart("Starting city data fetcher");
@@ -51,12 +57,12 @@ namespace MSL.client
             {
                 if (e.Result != null && e.Result.Trim().Length > 0 && e.Result.Trim() != "{}")
                 {
-                    _playerCityData = JSON.ToObject<Dictionary<string, CityData>>(e.Result);
+                    _cityDataRepository.UpdateAll(JSON.ToObject<Dictionary<string, CityData>>(e.Result));
 
                     var ui = GameObject.FindObjectOfType<CityDataUI>();
                     if (ui != null)
                     {
-                        ui.UpdateCityDataDisplay(_playerCityData);
+                        ui.UpdateCityDataDisplay();
                     }
                 }
 

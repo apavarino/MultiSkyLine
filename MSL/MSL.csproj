@@ -90,19 +90,19 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="client\CityDataEmitter.cs" />
-        <Compile Include="client\CityDataFetcher.cs" />
+        <Compile Include="client\controller\CityDataEmitter.cs" />
+        <Compile Include="client\controller\CityDataFetcher.cs" />
         <Compile Include="client\ui\CityDataUI.cs" />
         <Compile Include="client\ui\UIBuilder.cs" />
         <Compile Include="client\ui\CityDataGrid.cs" />
         <Compile Include="Configs.cs" />
         <Compile Include="model\CityData.cs" />
         <Compile Include="model\Contract.cs" />
+        <Compile Include="model\repository\CityDataRepository.cs" />
         <Compile Include="model\MslConfig.cs" />
         <Compile Include="Msl.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="MslLogger.cs" />
-        <Compile Include="server\db\CityDataInMemoryRepository.cs" />
         <Compile Include="server\EmbeddedServer.cs" />
         <Compile Include="server\rest\CityDataRoute.cs" />
         <Compile Include="server\RouteKey.cs" />

@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework.UI;
 using MSL.model;
+using MSL.model.repository;
 using UnityEngine;
 
 namespace MSL.client.ui
@@ -32,8 +32,12 @@ namespace MSL.client.ui
         private UIButton _applyButton;
         private UIButton _newContractCloseButton;
         
-        public static Dictionary<string, CityData> CityData = new Dictionary<string, CityData>();
-       
+        private CityDataRepository _cityDataRepository;
+        
+        public void Initialize(CityDataRepository cityDataRepository )
+        {
+            _cityDataRepository = cityDataRepository;
+        }
         
         public void Start()
         {
@@ -44,7 +48,6 @@ namespace MSL.client.ui
         {
             MainUI();
             NewContractUI();
-            
         }
 
         private void NewContractUI()
@@ -83,12 +86,12 @@ namespace MSL.client.ui
                 MslLogger.LogSuccess($"Amount: {amount}, Price: {price}");
                 var contract = new Contract
                 {
-                    From = CityDataEmitter.CityName,
+                    From = _cityDataRepository.FindCurrentCityName(),
                     Amount = _amountSlider.value,
                     Price = _priceSlider.value,
                     Type = (ContractType)Enum.Parse(typeof(ContractType),_dropdown.selectedValue)
                 };
-                CityData[CityDataEmitter.CityName].Contracts.Add(contract);
+                _cityDataRepository.AddContract(contract);
                 _newContractPanel.isVisible = false;
             };
 
@@ -153,7 +156,7 @@ namespace MSL.client.ui
             {
                 ToggleContract = !ToggleContract;
                 _toggleTabButton.text = ToggleContract ? "Toggle cities data" : "Show open contracts";
-                _cityDataGrid.UpdateGrid(CityData);
+                _cityDataGrid.UpdateGrid(_cityDataRepository.FindAll());
                 
             };
             // New Contract Button
@@ -164,11 +167,10 @@ namespace MSL.client.ui
             };
         }
         
-        public void UpdateCityDataDisplay(Dictionary<string, CityData> newCityData)
+        public void UpdateCityDataDisplay()
         {
             MslLogger.LogSuccess("Updating city data..");
-            CityData = newCityData;
-            _cityDataGrid.UpdateGrid(CityData);
+            _cityDataGrid.UpdateGrid(_cityDataRepository.FindAll());
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading;
-using MSL.server.db;
+using MSL.model.repository;
 
 namespace MSL.server
 {
@@ -17,7 +17,7 @@ namespace MSL.server
         private readonly Dictionary<RouteKey, Action<HttpListenerRequest, HttpListenerResponse>> _routes = 
             new Dictionary<RouteKey, Action<HttpListenerRequest, HttpListenerResponse>>();
         
-        public static readonly CityDataInMemoryRepository CityDataRepository = new CityDataInMemoryRepository();
+        public static readonly CityDataRepository CityDataRepository = new CityDataRepository(null);
 
         public EmbeddedServer(string ip)
         {
@@ -84,7 +84,7 @@ namespace MSL.server
                 }
                 else
                 {
-                    MslLogger.LogServer($"⚠️ Unhandled request ({clientIP}): {routeKey.HttpMethod} {routeKey.Path}");
+                    MslLogger.LogServer($"Unhandled request ({clientIP}): {routeKey.HttpMethod} {routeKey.Path}");
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                 }
                 response.Close();
