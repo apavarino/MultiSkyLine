@@ -14,11 +14,11 @@ namespace MSL
             MslLogger.LogWriteToDisk("Loading configs from " + ConfigFile + "...");
             try
             {
-                var sr = new StreamReader(ConfigFile);
-                var tmp = JSON.ToObject<MslConfig>(sr.ReadToEnd());
+                var streamReader = new StreamReader(ConfigFile);
+                var loadedConfig = JSON.ToObject<MslConfig>(streamReader.ReadToEnd());
                 
                 MslLogger.LogWriteToDisk("Finished loading configs ...");
-                return tmp;
+                return loadedConfig;
             }
             catch (Exception e)
             {
@@ -32,10 +32,10 @@ namespace MSL
             MslLogger.LogWriteToDisk("Savings configs to " + ConfigFile + "...");
             try
             {
-                using (var sw = new StreamWriter(ConfigFile))
+                using (var streamWriter = new StreamWriter(ConfigFile))
                 {
-                    var jsonStr = JSON.ToJSON(config);
-                    sw.Write(jsonStr);
+                    var jsonConfig = JSON.ToJSON(config);
+                    streamWriter.Write(jsonConfig);
                 }
             }
             catch (Exception e)
