@@ -1,46 +1,41 @@
 ﻿using System;
 using System.IO;
 using fastJSON;
+using MSL.model;
 
 namespace MSL
 {
     public class Configs
     {
-        private static readonly String ConfigFile = Path.Combine(Utils.GetModDirectory(), "configs.json");
+        private static readonly string ConfigFile = Path.Combine(Utils.GetModDirectory(), "configs.json");
 
-        public String LocalUrl { get; set; } = "127.0.0.1";
-        public String DistantUrl { get; set; } = "127.0.0.1";
-        public Boolean IsServerEnabled { get; set; } = true;
-
-
-        public void LoadConfig()
+        public static MslConfig LoadConfig()
         {
             MslLogger.LogWriteToDisk("Loading configs from " + ConfigFile + "...");
             try
             {
-                var sr = new StreamReader(ConfigFile);
-                var tmp = JSON.ToObject<Configs>(sr.ReadToEnd());
-                LocalUrl = tmp.LocalUrl;
-                DistantUrl = tmp.DistantUrl;
-                IsServerEnabled = tmp.IsServerEnabled;
+                var streamReader = new StreamReader(ConfigFile);
+                var loadedConfig = JSON.ToObject<MslConfig>(streamReader.ReadToEnd());
                 
                 MslLogger.LogWriteToDisk("Finished loading configs ...");
+                return loadedConfig;
             }
             catch (Exception e)
             {
                 MslLogger.LogError("Could not load configs: " + e.Message);
+                return new MslConfig();
             }
         }
 
-        public void SaveConfig()
+        public static void SaveConfig(MslConfig config)
         {
             MslLogger.LogWriteToDisk("Savings configs to " + ConfigFile + "...");
             try
             {
-                using (var sw = new StreamWriter(ConfigFile))
+                using (var streamWriter = new StreamWriter(ConfigFile))
                 {
-                    var jsonStr = JSON.ToJSON(this);
-                    sw.Write(jsonStr);
+                    var jsonConfig = JSON.ToJSON(config);
+                    streamWriter.Write(jsonConfig);
                 }
             }
             catch (Exception e)

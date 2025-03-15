@@ -99,6 +99,7 @@
         <Compile Include="model\CityData.cs" />
         <Compile Include="model\Contract.cs" />
         <Compile Include="model\repository\CityDataRepository.cs" />
+        <Compile Include="model\MslConfig.cs" />
         <Compile Include="Msl.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="MslLogger.cs" />
