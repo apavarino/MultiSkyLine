@@ -90,6 +90,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="client\controller\CityDataConnector.cs" />
         <Compile Include="client\controller\CityDataEmitter.cs" />
         <Compile Include="client\controller\CityDataFetcher.cs" />
         <Compile Include="client\ui\CityDataUI.cs" />

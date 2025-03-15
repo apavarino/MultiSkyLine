@@ -15,9 +15,8 @@ namespace MSL
         public string Description => "MultiSkyLine";
 
         private EmbeddedServer _server;
-
-        private CityDataEmitter _cityDataEmitter;
-        private CityDataFetcher _cityDataFetcher;
+        
+        private CityDataConnector _cityDataConnector;
         private CityDataRepository _clientRepository;
         
         private static readonly string DefaultServerIP = "127.0.0.1";
@@ -55,13 +54,10 @@ namespace MSL
             {
                 ServerIP = Config.ServerURL;
             }
-
-           
+            
             _clientRepository = new CityDataRepository(SimulationManager.instance.m_metaData.m_CityName);
-            _cityDataEmitter = new CityDataEmitter(_clientRepository);
-            _cityDataFetcher = new CityDataFetcher(_clientRepository);
-            _cityDataEmitter.Start();
-            _cityDataFetcher.Start();
+            _cityDataConnector = new CityDataConnector(_clientRepository);
+            _cityDataConnector.Start();
             
             _cityDataUI = new GameObject("CityDataUI").AddComponent<CityDataUI>();
             _cityDataUI.Initialize(_clientRepository);
@@ -77,8 +73,7 @@ namespace MSL
                 GameObject.Destroy(_cityDataUI);
             }
             
-            _cityDataEmitter?.Stop();
-            _cityDataFetcher?.Stop();
+            _cityDataConnector?.Stop();
             StopServer();
             Configs.SaveConfig(Config);
             MslLogger.LogStop("Mod disabled");

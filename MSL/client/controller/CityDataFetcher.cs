@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Threading;
 using fastJSON;
 using MSL.client.ui;
 using MSL.model;
@@ -14,7 +13,6 @@ namespace MSL.client.controller
     {
         private static readonly WebClient Client = new WebClient();
         private readonly string _serverUrl = $"http://{Msl.ServerIP}:5000/api/cityData/all";
-        private Timer _timer;
         private readonly CityDataRepository _cityDataRepository;
         
         public CityDataFetcher(CityDataRepository cityDataRepository )
@@ -22,19 +20,7 @@ namespace MSL.client.controller
             _cityDataRepository = cityDataRepository;
         }
         
-        public void Start()
-        {
-            MslLogger.LogStart("Starting city data fetcher");
-            _timer = new Timer(FetchCityData, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
-        }
-
-        public void Stop()
-        {
-            MslLogger.LogError("Stopping city data fetcher");
-            _timer?.Dispose();
-        }
-
-        private void FetchCityData(object state)
+        public void FetchCityData()
         {
             MslLogger.LogSend($"Requesting city data ({_serverUrl})");
 

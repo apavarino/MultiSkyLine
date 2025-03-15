@@ -92,6 +92,7 @@ namespace MSL.client.ui
                     Type = (ContractType)Enum.Parse(typeof(ContractType),_dropdown.selectedValue)
                 };
                 _cityDataRepository.AddContract(contract);
+                UpdateCityDataDisplay();
                 _newContractPanel.isVisible = false;
             };
 
@@ -156,8 +157,7 @@ namespace MSL.client.ui
             {
                 ToggleContract = !ToggleContract;
                 _toggleTabButton.text = ToggleContract ? "Toggle cities data" : "Show open contracts";
-                _cityDataGrid.UpdateGrid(_cityDataRepository.FindAll());
-                
+                UpdateCityDataDisplay();
             };
             // New Contract Button
             _newContractButton = UIBuilder.CreateButton(_panel, "New Contract", 150,_panel.width - 160, _panel.height - 45);
@@ -169,7 +169,6 @@ namespace MSL.client.ui
         
         public void UpdateCityDataDisplay()
         {
-            MslLogger.LogSuccess("Updating city data..");
             _cityDataGrid.UpdateGrid(_cityDataRepository.FindAll());
         }
     }

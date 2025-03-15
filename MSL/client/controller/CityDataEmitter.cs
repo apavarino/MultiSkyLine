@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Threading;
 using ColossalFramework;
 using fastJSON;
 using MSL.model;
@@ -18,27 +17,14 @@ namespace MSL.client.controller
             SerializeNullValues = false,
             ShowReadOnlyProperties = true
         };
-        private Timer _timer;
         private readonly CityDataRepository _cityDataRepository;
         
         public CityDataEmitter(CityDataRepository cityDataRepository )
         {
             _cityDataRepository = cityDataRepository;
         }
-
-        public void Start()
-        {
-            MslLogger.LogStart("Starting city data emitter");
-            _timer = new Timer(SendCityData, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
-        }
-
-        public void Stop()
-        {
-            MslLogger.LogStop("Stopping city data emitter");
-            _timer?.Dispose();
-        }
-
-        private void SendCityData(object state)
+        
+        public void SendCityData()
         {
             try
             {
@@ -65,6 +51,7 @@ namespace MSL.client.controller
                     client.Headers[HttpRequestHeader.ContentType] = "application/json";
                     MslLogger.LogSend($"Sending to {_serverUrl}...");
                     client.UploadStringAsync(new Uri(_serverUrl), "POST", json);
+                    _cityDataRepository.UpdateOne(payload);
                 }
             }
             catch (Exception ex)

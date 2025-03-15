@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-
 namespace MSL.model.repository
 {
     public class CityDataRepository
@@ -17,6 +16,11 @@ namespace MSL.model.repository
         public string FindCurrentCityName()
         {
             return _currentCity;
+        }
+        
+        public void UpdateOne( CityData cityData)
+        {
+            _citiesData[_currentCity] = cityData;
         }
 
         public void UpdateOneByCityName(string cityName, CityData cityData)
