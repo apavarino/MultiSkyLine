@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.UI;
 using ICities;
 using MSL.client;
+using MSL.client.controller;
 using MSL.client.ui;
 using MSL.server;
 using UnityEngine;
@@ -23,7 +24,7 @@ namespace MSL
         private GameObject _uiObject;
         
         private readonly Configs _configs = new Configs();
-
+        
         public void OnLevelLoaded(LoadMode mode)
         {
             _configs.LoadConfig();

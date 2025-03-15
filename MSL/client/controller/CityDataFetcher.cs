@@ -7,7 +7,7 @@ using MSL.client.ui;
 using MSL.model;
 using UnityEngine;
 
-namespace MSL.client
+namespace MSL.client.controller
 {
     public class CityDataFetcher
     {

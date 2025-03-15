@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework.UI;
+using MSL.client.controller;
 using MSL.model;
 using UnityEngine;
 
@@ -44,7 +45,6 @@ namespace MSL.client.ui
         {
             MainUI();
             NewContractUI();
-            
         }
 
         private void NewContractUI()

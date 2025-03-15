@@ -26,7 +26,6 @@ namespace MSL.server.rest
             EmbeddedServer.CityDataRepository.UpdatePlayerCityData(data.CityName,data);
             response.StatusCode = (int)HttpStatusCode.OK;
         }
-
         
         private static void FetchAllCityDataRoute(HttpListenerRequest request, HttpListenerResponse response)
         {

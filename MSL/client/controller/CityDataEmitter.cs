@@ -6,7 +6,7 @@ using fastJSON;
 using MSL.client.ui;
 using MSL.model;
 
-namespace MSL.client
+namespace MSL.client.controller
 {
     public class CityDataEmitter
     {

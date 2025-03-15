@@ -90,8 +90,8 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="client\CityDataEmitter.cs" />
-        <Compile Include="client\CityDataFetcher.cs" />
+        <Compile Include="client\controller\CityDataEmitter.cs" />
+        <Compile Include="client\controller\CityDataFetcher.cs" />
         <Compile Include="client\ui\CityDataUI.cs" />
         <Compile Include="client\ui\UIBuilder.cs" />
         <Compile Include="client\ui\CityDataGrid.cs" />

@@ -84,7 +84,7 @@ namespace MSL.server
                 }
                 else
                 {
-                    MslLogger.LogServer($"⚠️ Unhandled request ({clientIP}): {routeKey.HttpMethod} {routeKey.Path}");
+                    MslLogger.LogServer($"Unhandled request ({clientIP}): {routeKey.HttpMethod} {routeKey.Path}");
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                 }
                 response.Close();
