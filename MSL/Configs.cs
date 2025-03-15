@@ -9,13 +9,13 @@ namespace MSL
     {
         private static readonly string ConfigFile = Path.Combine(Utils.GetModDirectory(), "configs.json");
 
-        public static MSLConfig LoadConfig()
+        public static MslConfig LoadConfig()
         {
             MslLogger.LogWriteToDisk("Loading configs from " + ConfigFile + "...");
             try
             {
                 var sr = new StreamReader(ConfigFile);
-                var tmp = JSON.ToObject<MSLConfig>(sr.ReadToEnd());
+                var tmp = JSON.ToObject<MslConfig>(sr.ReadToEnd());
                 
                 MslLogger.LogWriteToDisk("Finished loading configs ...");
                 return tmp;
@@ -23,11 +23,11 @@ namespace MSL
             catch (Exception e)
             {
                 MslLogger.LogError("Could not load configs: " + e.Message);
-                return new MSLConfig();
+                return new MslConfig();
             }
         }
 
-        public static void SaveConfig(MSLConfig config)
+        public static void SaveConfig(MslConfig config)
         {
             MslLogger.LogWriteToDisk("Savings configs to " + ConfigFile + "...");
             try

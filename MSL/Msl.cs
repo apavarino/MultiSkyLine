@@ -22,7 +22,7 @@ namespace MSL
         public static string ServerIP = DefaultServerIP;
         private static bool _isServerEnabled = true;
         
-        public static MSLConfig Config = new MSLConfig();
+        public static MslConfig Config = new MslConfig();
 
         private GameObject _uiObject;
         
