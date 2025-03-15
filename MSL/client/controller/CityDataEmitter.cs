@@ -18,13 +18,16 @@ namespace MSL.client.controller
             ShowReadOnlyProperties = true
         };
         private readonly CityDataRepository _cityDataRepository;
+        private readonly WebClient _client = new WebClient();
+
         
         public CityDataEmitter(CityDataRepository cityDataRepository )
         {
             _cityDataRepository = cityDataRepository;
+            _client.Headers[HttpRequestHeader.ContentType] = "application/json";
         }
         
-        public void SendCityData()
+        public void SendCityData(Action callback)
         {
             try
             {
@@ -32,7 +35,6 @@ namespace MSL.client.controller
                 var production = districtManager.m_districts.m_buffer[0].GetElectricityCapacity();
                 var consumption = districtManager.m_districts.m_buffer[0].GetElectricityConsumption();
                 var extra = production - consumption;
-
                 
                 var payload = new CityData
                 {
@@ -45,19 +47,32 @@ namespace MSL.client.controller
 
                 var json = JSON.ToJSON(payload, _jsonParams);
                 MslLogger.LogSend($"JSON generated : {json}");
-
-                using (var client = new WebClient())
-                {
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    MslLogger.LogSend($"Sending to {_serverUrl}...");
-                    client.UploadStringAsync(new Uri(_serverUrl), "POST", json);
-                    _cityDataRepository.UpdateOne(payload);
-                }
+                MslLogger.LogSend($"Sending to {_serverUrl}...");
+                _cityDataRepository.UpdateOne(payload);
+                
+                // Avoid multiple subscribing
+                _client.UploadStringCompleted -= OnUploadStringCompleted(callback);
+                _client.UploadStringCompleted += OnUploadStringCompleted(callback);
+                _client.UploadStringAsync(new Uri(_serverUrl), "POST", json);
             }
             catch (Exception ex)
             {
                 MslLogger.LogError($"Error sending request : {ex.Message}");
             }
+        }
+
+        private static UploadStringCompletedEventHandler OnUploadStringCompleted(Action callback)
+        {
+            return (sender, e) =>
+            {
+                if (e.Error != null)
+                {
+                    MslLogger.LogError($"Sending error : {e.Error.Message}");
+                    return;
+                }
+                
+                callback?.Invoke(); 
+            };
         }
     }
 }

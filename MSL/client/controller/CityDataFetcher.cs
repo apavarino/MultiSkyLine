@@ -11,24 +11,20 @@ namespace MSL.client.controller
 {
     public class CityDataFetcher
     {
-        private static readonly WebClient Client = new WebClient();
+        private readonly WebClient _client = new WebClient();
         private readonly string _serverUrl = $"http://{Msl.ServerIP}:5000/api/cityData/all";
         private readonly CityDataRepository _cityDataRepository;
         
-        public CityDataFetcher(CityDataRepository cityDataRepository )
+        public CityDataFetcher(CityDataRepository cityDataRepository)
         {
             _cityDataRepository = cityDataRepository;
+            _client.DownloadStringCompleted += OnDownloadStringCompleted;
         }
         
         public void FetchCityData()
         {
             MslLogger.LogSend($"Requesting city data ({_serverUrl})");
-
-            // Avoid multiple subscribe
-            Client.DownloadStringCompleted -= OnDownloadStringCompleted;
-            Client.DownloadStringCompleted += OnDownloadStringCompleted;
-
-            Client.DownloadStringAsync(new Uri(_serverUrl));
+            _client.DownloadStringAsync(new Uri(_serverUrl));
         }
 
         private void OnDownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)

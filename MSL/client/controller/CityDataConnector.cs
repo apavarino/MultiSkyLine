@@ -31,9 +31,7 @@ namespace MSL.client.controller
 
         private void Handle(object state)
         {
-            _cityDataEmitter.SendCityData();
-            Thread.Sleep(100);
-            _cityDataFetcher.FetchCityData();
+            _cityDataEmitter.SendCityData(_cityDataFetcher.FetchCityData);
         }
     }
 }
