@@ -2,6 +2,7 @@
 using ICities;
 using MSL.client;
 using MSL.client.ui;
+using MSL.model;
 using MSL.server;
 using UnityEngine;
 
@@ -17,26 +18,41 @@ namespace MSL
         private CityDataEmitter _cityDataEmitter;
         private CityDataFetcher _cityDataFetcher;
         
-        public static string ServerIP = "127.0.0.1";
+        private static readonly string DefaultServerIP = "127.0.0.1";
+        public static string ServerIP = DefaultServerIP;
         private static bool _isServerEnabled = true;
+        
+        public static MSLConfig Config = new MSLConfig();
 
         private GameObject _uiObject;
         
         private readonly Configs _configs = new Configs();
+        
+        public void OnEnabled()
+        {
+            Config = Configs.LoadConfig();
+            _isServerEnabled = Config.IsServerEnabled;
+            if (!_isServerEnabled)
+            {
+                ServerIP = Config.ServerURL;
+            }
+        }
+
+        public void OnDisabled()
+        {
+            Configs.SaveConfig(Config);
+        }
 
         public void OnLevelLoaded(LoadMode mode)
         {
-            _configs.LoadConfig();
-            _isServerEnabled = _configs.IsServerEnabled;
-            
             if (_isServerEnabled)
             {
-                ServerIP = _configs.LocalUrl;
+                ServerIP = DefaultServerIP;
                 StartServer();
             }
             else
             {
-                ServerIP = _configs.DistantUrl;
+                ServerIP = Config.ServerURL;
             }
 
             MslLogger.LogSuccess($"Mod enable. Server active : {_isServerEnabled}");
@@ -60,7 +76,7 @@ namespace MSL
             _cityDataEmitter?.Stop();
             _cityDataFetcher?.Stop();
             StopServer();
-            _configs.SaveConfig();
+            Configs.SaveConfig(Config);
             MslLogger.LogStop("Mod disabled");
         }
         
@@ -89,17 +105,17 @@ namespace MSL
                 MslLogger.LogServer($"Server state changed : {_isServerEnabled}");
 
                 MslLogger.LogServer("updating the config file for restarting the server correctly");
-                _configs.IsServerEnabled = _isServerEnabled;
+                Config.IsServerEnabled = _isServerEnabled;
                 if (_isServerEnabled)
                 {
                     MslLogger.LogServer("Updating the server ip to local url");
-                    ServerIP = _configs.LocalUrl;
+                    ServerIP = DefaultServerIP;
                     StartServer();
                 }
                 else
                 {
                     MslLogger.LogServer("Updating the server ip to distant url");
-                    ServerIP = _configs.DistantUrl;
+                    ServerIP = Config.ServerURL;
                     StopServer();
                 }
 
@@ -114,13 +130,9 @@ namespace MSL
             {
                 ServerIP = value;
 
-                if (_isServerEnabled)
+                if (!_isServerEnabled)
                 {
-                    _configs.LocalUrl = ServerIP;
-                }
-                else
-                {
-                    _configs.DistantUrl = ServerIP;
+                    Config.ServerURL = ServerIP;
                 }
                 
                 MslLogger.LogServer($"New IP : {ServerIP}");
