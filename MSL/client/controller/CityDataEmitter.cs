@@ -70,7 +70,6 @@ namespace MSL.client.controller
                     MslLogger.LogError($"Sending error : {e.Error.Message}");
                     return;
                 }
-                
                 callback?.Invoke(); 
             };
         }
