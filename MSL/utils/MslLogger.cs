@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace MSL
+namespace MSL.utils
 {
-    static class LogState
+    internal static class LogState
     {
         public const string Server = "🌍";
         public const string Error = "❌";
@@ -62,17 +62,17 @@ namespace MSL
             LogClient(message, LogState.WriteToDisk);
         }
 
-        private static void LogServer(string message, String logState)
+        private static void LogServer(string message, string logState)
         { 
             Log(message,logState,ServerLogFilePath);
         }
 
-        private static void LogClient(string message, String logState)
+        private static void LogClient(string message, string logState)
         {
            Log(message,logState,LogFilePath);
         }
 
-        private static void Log(string message, String logState, String logPath)
+        private static void Log(string message, string logState, string logPath)
         {
             try
             {

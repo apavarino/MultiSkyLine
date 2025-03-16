@@ -3,7 +3,7 @@ using System.IO;
 using fastJSON;
 using MSL.model;
 
-namespace MSL
+namespace MSL.utils
 {
     public class Configs
     {

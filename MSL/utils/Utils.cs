@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using ColossalFramework.Plugins;
 
-namespace MSL
+namespace MSL.utils
 {
     public static class Utils
     {
