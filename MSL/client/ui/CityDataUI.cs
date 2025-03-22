@@ -98,13 +98,7 @@ namespace MSL.client.ui
             };
 
             // Closed
-            _newContractCloseButton = (UIButton)_newContractPanel.AddUIComponent(typeof(UIButton));
-            _newContractCloseButton.text = "X";
-            _newContractCloseButton.width = 30;
-            _newContractCloseButton.height = 30;
-            _newContractCloseButton.normalBgSprite = "ButtonClose";
-            _newContractCloseButton.relativePosition = new Vector3(_newContractPanel.width - 30, 5);
-            _newContractCloseButton.eventClick += (component, eventParam) => _newContractPanel.isVisible = false;
+            _newContractCloseButton = UIBuilder.CreateCloseButton(_newContractPanel);
         }
 
         private void MainUI()
@@ -141,14 +135,8 @@ namespace MSL.client.ui
             _cityDataGrid = (CityDataGrid)_panel.AddUIComponent(typeof(CityDataGrid));
             
             // Close button
-            _closeButton = (UIButton)_panel.AddUIComponent(typeof(UIButton));
-            _closeButton.text = "X";
-            _closeButton.width = 30;
-            _closeButton.height = 30;
-            _closeButton.normalBgSprite = "ButtonClose";
-            _closeButton.relativePosition = new Vector3(_panel.width - 30, 5);
-            _closeButton.eventClick += (component, eventParam) => { _panel.isVisible = false; };
-
+            _newContractCloseButton = UIBuilder.CreateCloseButton(_panel);
+            
             // Power button
             _powerButton = UIBuilder.CreateButton(_panel, "Power", 100,10, 50);
             
@@ -170,7 +158,7 @@ namespace MSL.client.ui
         
         public void UpdateCityDataDisplay()
         {
-            _cityDataGrid.UpdateGrid(_cityDataRepository.FindAll());
+            _cityDataGrid.UpdateGrid(_cityDataRepository.FindAll(), _cityDataRepository.FindCurrentCityName(), _cityDataRepository);
         }
     }
 }

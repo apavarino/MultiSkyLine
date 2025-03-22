@@ -51,7 +51,7 @@ namespace MSL.client.ui
         
         public static UIButton CreateButton(UIPanel panel,string text,float width, float xOffset, float yOffset)
         {
-            UIButton button = panel.AddUIComponent<UIButton>();
+            var button = panel.AddUIComponent<UIButton>();
             button.text = text;
             button.width = width;
             button.height = 30;
@@ -59,6 +59,18 @@ namespace MSL.client.ui
             button.normalBgSprite = "ButtonMenu";
             button.hoveredBgSprite = "ButtonMenuHovered";
             button.pressedBgSprite = "ButtonMenuPressed";
+            return button;
+        }
+
+        public static UIButton CreateCloseButton(UIPanel panel)
+        {
+            var button = (UIButton)panel.AddUIComponent(typeof(UIButton));
+            button.text = "X";
+            button.width = 30;
+            button.height = 30;
+            button.normalBgSprite = "ButtonClose";
+            button.relativePosition = new Vector3(panel.width - 30, 5);
+            button.eventClick += (component, eventParam) => panel.isVisible = false;
             return button;
         }
         

@@ -28,8 +28,6 @@ namespace MSL
 
         private CityDataUI _cityDataUI;
         
-        private readonly Configs _configs = new Configs();
-        
         public void OnEnabled()
         {
             _config = Configs.LoadConfig();

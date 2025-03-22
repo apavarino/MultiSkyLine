@@ -77,6 +77,14 @@ namespace MSL.model.repository
         }
         
         /// <summary>
+        /// Remove given contract of the current city.
+        /// </summary>
+        public void RemoveContract(Contract contract)
+        {
+             _citiesData[_currentCity].Contracts.Remove(contract);
+        }
+        
+        /// <summary>
         /// Retrieves the contracts associated with the current city.
         /// </summary>
         /// <returns>A list of contracts for the current city, or null if the city is not found.</returns>

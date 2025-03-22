@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using ColossalFramework.UI;
 using MSL.model;
+using MSL.model.repository;
 using UnityEngine;
 
 namespace MSL.client.ui
@@ -10,9 +11,9 @@ namespace MSL.client.ui
     public class CityDataGrid  : UIPanel
     {
         private UIPanel _tableContainer;
-        private List<UIPanel> _rows = new List<UIPanel>();
+        private readonly List<UIPanel> _rows = new List<UIPanel>();
 
-        private const float ColumnWidth = 120f;
+        private const float ColumnWidth = 110f;
         private const float RowHeight = 30f;
 
         public override void Start()
@@ -28,7 +29,7 @@ namespace MSL.client.ui
             relativePosition = new Vector3(120, 40);
             backgroundSprite = "GenericPanel";
             
-            UILabel titleLabel = AddUIComponent<UILabel>();
+            var titleLabel = AddUIComponent<UILabel>();
             titleLabel.text = "City Data";
             titleLabel.relativePosition = new Vector3(10, 7);
             
@@ -38,10 +39,13 @@ namespace MSL.client.ui
             _tableContainer.relativePosition = new Vector3(0, 30);
             _tableContainer.backgroundSprite = "GenericPanelLight";
             
-            AddRow("City", "Cons.(MW)", "Prod.(MW)","Extra (MW)", isHeader: true);
+            AddRow(new List<string> { "City", "Cons.(MW)", "Prod.(MW)", "Extra (MW)" }, isHeader: true);
         }
 
-        public void UpdateGrid(Dictionary<string, CityData> cityData)
+        public void UpdateGrid(
+            Dictionary<string, CityData> cityData, 
+            string currentCity,
+            CityDataRepository cityDataRepository)
         {
             foreach (var row in _rows)
             {
@@ -51,46 +55,63 @@ namespace MSL.client.ui
 
             if (!CityDataUI.ToggleContract)
             {
-                AddRow("City", "Cons.(MW)", "Prod.(MW)","Extra (MW)", isHeader: true);
+                AddRow(new List<string> { "City", "Cons.(MW)", "Prod.(MW)", "Extra (MW)" }, isHeader: true);
                 foreach (var entry in cityData)
                 {
-                    AddRow(entry.Key, $"{entry.Value.ElectricConsumption / 1000}", $"{entry.Value.ElectricProduction / 1000}",$"{entry.Value.ElectricExtra / 1000}");
+                    AddRow(new List<string>
+                    {
+                        entry.Key, $"{entry.Value.ElectricConsumption / 1000}",
+                        $"{entry.Value.ElectricProduction / 1000}",
+                        $"{entry.Value.ElectricExtra / 1000}"
+                    });
                 }
             }
             else
             {
-                AddRow("City", "Type", "Amount","Price", isHeader: true);
+                AddRow(new List<string> { "City", "Type", "Amount", "Price", "Action" }, isHeader: true);
                 foreach (var contract in cityData.SelectMany(entry => entry.Value.Contracts))
                 {
-                    AddRow( 
-                        contract.From, 
-                        contract.Type.ToString(),
+                    AddRow(new List<string>
+                    {
+                        contract.From, contract.Type.ToString(), 
                         contract.Amount.ToString(CultureInfo.InvariantCulture),
-                        contract.Price.ToString(CultureInfo.InvariantCulture));
+                        contract.Price.ToString(CultureInfo.InvariantCulture)
+                    });
+
+                    if (contract.From == currentCity)
+                    {
+                       var removeContractButton =  UIBuilder.CreateButton(_tableContainer, "x", 20, 4 * ColumnWidth + 15 , 35);
+                       removeContractButton.height = 20;
+                       removeContractButton.eventClick += (component, eventParam) =>
+                       {
+                           cityDataRepository.RemoveContract(contract);
+                           Destroy(removeContractButton.gameObject);
+                           UpdateGrid(cityDataRepository.FindAll(), currentCity, cityDataRepository);  
+                       };
+                    }
                 }
             }
         }
         
-        // Todo use table instead of this ugly line system
-        private void AddRow(string line1, string line2, string line3,string line4, bool isHeader = false)
+        private void AddRow(List<string> lines, bool isHeader = false)
         {
-            UIPanel rowPanel = _tableContainer.AddUIComponent<UIPanel>();
+            var rowPanel = _tableContainer.AddUIComponent<UIPanel>();
             rowPanel.width = _tableContainer.width;
             rowPanel.height = RowHeight;
             rowPanel.relativePosition = new Vector3(0, _rows.Count * RowHeight);
             rowPanel.backgroundSprite = isHeader ? "GenericPanel" : "GenericPanelLight";
             
-            CreateCell(rowPanel, line1, 0, isHeader);
-            CreateCell(rowPanel, line2, 1, isHeader);
-            CreateCell(rowPanel, line3, 2, isHeader);
-            CreateCell(rowPanel, line4, 3, isHeader);
-
+            foreach (var line in lines.Select((value, index) => new { index, value }))
+            {
+                CreateCell(rowPanel, line.value, line.index, isHeader);
+            }
+            
             _rows.Add(rowPanel);
         }
 
-        private void CreateCell(UIPanel row, string text, int columnIndex, bool isHeader)
+        private static void CreateCell(UIPanel row, string text, int columnIndex, bool isHeader)
         {
-            UILabel cell = row.AddUIComponent<UILabel>();
+            var cell = row.AddUIComponent<UILabel>();
             cell.text = text;
             cell.width = ColumnWidth;
             cell.height = RowHeight;
